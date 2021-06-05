@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 )
 
 var (
-	RuntimePath = "runtime/"
-	LogSavePath = "runtime/logs/"
-	LogSaveName = "app"
+	LogSavePath = "/webser/www/logs/"
+	LogSaveName = "ilog"
 	LogSaveExt  = "log"
 	TimeFormat  = "20060102"
 )
@@ -19,10 +17,14 @@ func getLogFileSavePath() string {
 	return LogSavePath
 }
 
-func getLogFileFullPath() string {
-	suffixPath := fmt.Sprintf("%s_%s.%s", LogSaveName, time.Now().Format(TimeFormat), LogSaveExt)
-
-	return fmt.Sprintf("%s%s", getLogFileSavePath(), suffixPath)
+func getLogFileFullPath(category string) string {
+	var fileName string
+	if category == "" {
+		fileName = fmt.Sprintf("%s.%s", LogSaveName, LogSaveExt)
+	} else {
+		fileName = fmt.Sprintf("%s_%s.%s", LogSaveName, category, LogSaveExt)
+	}
+	return fmt.Sprintf("%s%s", getLogFileSavePath(), fileName)
 }
 
 func openLogFile(filePath string) *os.File {
