@@ -15,9 +15,9 @@ const (
 
 // NewGRPCApplication 创建一个可以基于 gRPC 框架提供 RPC 接口服务的应用实例
 // 基于 gRPC 不仅可以提供 gRPC 默认的 RPC 接口服务，还可以通过配置开启同时提供 HTTP 接口服务
-func NewGRPCApplication(name string) *GRPCApplication {
-	app := &GRPCApplication{
-		Application: Application{
+func NewGRPCApplication(name string) *boot.GRPCApplication {
+	app := &boot.GRPCApplication{
+		Application: boot.Application{
 			Name:    name,
 			Type:    APP_TYPE_GRPC,
 			LogPath: logger.LogSavePath,
@@ -25,19 +25,14 @@ func NewGRPCApplication(name string) *GRPCApplication {
 		},
 		GRPCServer:      boot.NewGRPCServer(),
 		GatewayServeMux: boot.NewGateway(),
-
-		isOpenGateway: false,
-		isSharePort:   true,
 	}
-
-	app.HTTPServeMux = boot.NewGatewayServerMux(app.GatewayServeMux)
 	return app
 }
 
 // NewGinApplication 创建一个可以基于 Gin 框架提供 HTTP 接口服务的应用实例
-func NewGinApplication(name string) *GinApplication {
-	return &GinApplication{
-		Application: Application{
+func NewGinApplication(name string) *boot.GinApplication {
+	return &boot.GinApplication{
+		Application: boot.Application{
 			Name:    name,
 			Type:    APP_TYPE_GIN,
 			LogPath: logger.LogSavePath,
