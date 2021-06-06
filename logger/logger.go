@@ -1,119 +1,43 @@
 package logger
 
-import (
-	"fmt"
-	"log"
-	"path/filepath"
-	"runtime"
-)
+type LogInterface interface {
+	Debug(...interface{})
+	Info(...interface{})
+	Warn(...interface{})
+	Error(...interface{})
+	DB(float64, ...interface{})
+}
 
 type Level int
 
 var (
-	// F *os.File
-
 	DefaultPrefix      = ""
 	DefaultCallerDepth = 2
 
-	infoLogger  *log.Logger
-	warnLogger  *log.Logger
-	errorLogger *log.Logger
-	debugLogger *log.Logger
-	dbLogger    *log.Logger
-
-	logPrefix  = ""
-	levelFlags = []string{"debug", "info", "warning", "error", "database"}
-)
-
-const (
-	DEBUG Level = iota
-	INFO
-	WARNING
-	ERROR
-	FATAL
-	SQL
+	lg LogInterface
 )
 
 func init() {
-	infoLogger = initInfoLogger()
-	warnLogger = initWarnLogger()
-	errorLogger = initErrorLogger()
-	debugLogger = initDebugLogger()
-	dbLogger = initDbLogger()
+	lg = NewILog()
 }
 
-func initInfoLogger() *log.Logger {
-	infoFilePath := getLogFileFullPath("INFO")
-	infoFile := openLogFile(infoFilePath)
-
-	return log.New(infoFile, DefaultPrefix, log.LstdFlags)
+// Logger 返回当前 logger 包下正在使用的 log 实例
+// 默认使用 ilog 的实现
+func Logger() LogInterface {
+	return lg
 }
 
-func initWarnLogger() *log.Logger {
-	infoFilePath := getLogFileFullPath("INFO")
-	infoFile := openLogFile(infoFilePath)
+// Debug 记录调试类型日志信息
+func Debug(v ...interface{}) { lg.Debug(v...) }
 
-	return log.New(infoFile, DefaultPrefix, log.LstdFlags)
-}
+// Info 记录常规日志信息
+func Info(v ...interface{}) { lg.Info(v...) }
 
-func initErrorLogger() *log.Logger {
-	infoFilePath := getLogFileFullPath("INFO")
-	infoFile := openLogFile(infoFilePath)
+// Warn 记录警告类型日志信息
+func Warn(v ...interface{}) { lg.Warn(v...) }
 
-	return log.New(infoFile, DefaultPrefix, log.LstdFlags)
-}
+// Error 记录错误类型日志信息
+func Error(v ...interface{}) { lg.Error(v...) }
 
-func initDebugLogger() *log.Logger {
-	infoFilePath := getLogFileFullPath("INFO")
-	infoFile := openLogFile(infoFilePath)
-
-	return log.New(infoFile, DefaultPrefix, log.LstdFlags)
-}
-
-func initDbLogger() *log.Logger {
-	infoFilePath := getLogFileFullPath("INFO")
-	infoFile := openLogFile(infoFilePath)
-
-	return log.New(infoFile, DefaultPrefix, log.LstdFlags)
-}
-
-func Debug(v ...interface{}) {
-	setPrefix(DEBUG)
-	debugLogger.Println(v...)
-}
-
-func Info(v ...interface{}) {
-	setPrefix(INFO)
-	infoLogger.Println(v...)
-}
-
-func Warn(v ...interface{}) {
-	setPrefix(WARNING)
-	warnLogger.Println(v...)
-}
-
-func Error(v ...interface{}) {
-	setPrefix(ERROR)
-	errorLogger.Println(v...)
-}
-
-func Fatal(v ...interface{}) {
-	setPrefix(ERROR)
-	errorLogger.Fatalln(v...)
-}
-
-func DB(v ...interface{}) {
-	setPrefix(SQL)
-	dbLogger.Println(v...)
-}
-
-func setPrefix(level Level) {
-	_, file, line, ok := runtime.Caller(DefaultCallerDepth)
-	if ok {
-		logPrefix = fmt.Sprintf("[%s][%s:%d]", levelFlags[level], filepath.Base(file), line)
-	} else {
-		logPrefix = fmt.Sprintf("[%s]", levelFlags[level])
-	}
-
-	infoLogger.SetPrefix(logPrefix)
-}
+// DB 记录数据库执行记录相关信息
+func DB(duration float64, v ...interface{}) { lg.DB(duration, v...) }

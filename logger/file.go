@@ -1,37 +1,21 @@
 package logger
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
 
 var (
-	LogSavePath = "/webser/www/logs/"
-	LogSaveName = "ilog"
-	LogSaveExt  = "log"
-	TimeFormat  = "20060102"
+	DefaultLogSavePath = "/webser/www/logs/application/"
+	DefaultLogSaveName = "ilog"
+	DefaultLogSaveExt  = "log"
 )
-
-func getLogFileSavePath() string {
-	return LogSavePath
-}
-
-func getLogFileFullPath(category string) string {
-	var fileName string
-	if category == "" {
-		fileName = fmt.Sprintf("%s.%s", LogSaveName, LogSaveExt)
-	} else {
-		fileName = fmt.Sprintf("%s_%s.%s", LogSaveName, category, LogSaveExt)
-	}
-	return fmt.Sprintf("%s%s", getLogFileSavePath(), fileName)
-}
 
 func openLogFile(filePath string) *os.File {
 	_, err := os.Stat(filePath)
 	switch {
 	case os.IsNotExist(err):
-		mkDir()
+		log.Fatalf("logs path not exist")
 	case os.IsPermission(err):
 		log.Fatalf("Permission :%v", err)
 	}
@@ -42,12 +26,4 @@ func openLogFile(filePath string) *os.File {
 	}
 
 	return handle
-}
-
-func mkDir() {
-	dir, _ := os.Getwd()
-	err := os.MkdirAll(dir+"/"+getLogFileSavePath(), os.ModePerm)
-	if err != nil {
-		panic(err)
-	}
 }

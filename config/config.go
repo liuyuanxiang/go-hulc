@@ -17,6 +17,7 @@ type Config struct {
 	v        *viper.Viper
 }
 
+// NewConfig 返回一个配置管理实例
 func NewConfig() *Config {
 	return &Config{
 		loadPath: defaultConfigPath,
@@ -25,6 +26,8 @@ func NewConfig() *Config {
 	}
 }
 
+// SetConfigLoadPath 可以设置配置文件的加载路径
+// 未通过调用该方法设置配置文件路径时，默认会从 项目/config/ 目录下进行文件读取
 func SetConfigLoadPath(path string) {
 	defaultConfigPath = path
 }
@@ -54,13 +57,14 @@ func (c *Config) Get(key string) interface{} {
 }
 
 // GetDefault 在找不到可用的配置内容时，可以自定义返回的默认值
-func (c *Config) GetDefault(key string, defaultValue interface{}) interface{} {
+func (c *Config) GetDefault(key string, dv interface{}) interface{} {
 	if v := c.Get(key); v != nil {
 		return v
 	}
-	return defaultValue
+	return dv
 }
 
+// GetInt return a int
 func (c *Config) GetInt(key string) int {
 	if !c.isLoad {
 		return 0
@@ -75,6 +79,7 @@ func (c *Config) GetInt32(key string) int32 {
 	return c.v.GetInt32(key)
 }
 
+// GetInt64 return a int64
 func (c *Config) GetInt64(key string) int64 {
 	if !c.isLoad {
 		return 0
@@ -82,6 +87,7 @@ func (c *Config) GetInt64(key string) int64 {
 	return c.v.GetInt64(key)
 }
 
+// GetString return a string
 func (c *Config) GetString(key string) string {
 	if !c.isLoad {
 		return ""
@@ -89,9 +95,16 @@ func (c *Config) GetString(key string) string {
 	return c.v.GetString(key)
 }
 
+// GetStringMap return a map
 func (c *Config) GetStringMap(key string) map[string]interface{} {
 	if !c.isLoad {
 		return make(map[string]interface{})
 	}
 	return c.v.GetStringMap(key)
+}
+
+// IsProdEnv 判断当前应用的运行环境是否为生产环境
+// 根据配置文件中的 app.env 内容判断
+func (c *Config) IsProdEnv() bool {
+	return c.GetString("app.env") == "prod"
 }
