@@ -10,7 +10,7 @@ type LogInterface interface {
 	Info(...interface{})
 	Warn(...interface{})
 	Error(...interface{})
-	DB(float64, ...interface{})
+	Fatal(...interface{})
 }
 
 type Level int
@@ -44,8 +44,11 @@ func Warn(v ...interface{}) { lg.Warn(v...) }
 // Error 记录错误类型日志信息
 func Error(v ...interface{}) { lg.Error(v...) }
 
+// Fatal 记录错误类型日志信息
+func Fatal(v ...interface{}) { lg.Fatal(v...) }
+
 // DB 记录数据库执行记录相关信息
-func DB(duration float64, v ...interface{}) { lg.DB(duration, v...) }
+// func DB(duration float64, v ...interface{}) { lg.DB(duration, v...) }
 
 type defaultLogger struct {
 	savePath string
@@ -80,6 +83,10 @@ func (lg *defaultLogger) Error(v ...interface{}) {
 	lg.log.Println("[ERROR]", v)
 }
 
-func (lg *defaultLogger) DB(duration float64, v ...interface{}) {
-	lg.log.Println("[SQL]", v)
+func (lg *defaultLogger) Fatal(v ...interface{}) {
+	lg.log.Fatalln("[ERROR]", v)
 }
+
+// func (lg *defaultLogger) DB(duration float64, v ...interface{}) {
+// 	lg.log.Println("[SQL]", v)
+// }

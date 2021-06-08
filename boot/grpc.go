@@ -9,7 +9,6 @@ import (
 	"os/signal"
 	"time"
 
-	"git.mysre.cn/yunlian-golang/go-hulk/logger"
 	"git.mysre.cn/yunlian-golang/go-hulk/util"
 	"google.golang.org/grpc"
 )
@@ -31,7 +30,8 @@ func (app *GRPCApplication) Run() error {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 
-	logger.Debug(app.Name, "服务启动...")
+	app.Log.Debug(app.Name, "服务启动...")
+
 	go func() {
 		if app.isOpenGateway {
 			go func() {
@@ -61,8 +61,16 @@ func (app *GRPCApplication) Run() error {
 func (app *GRPCApplication) OpenGateway()  { app.isOpenGateway = true }
 func (app *GRPCApplication) CloseGateway() { app.isOpenGateway = false }
 
-func (app *GRPCApplication) OpenSharePort()  { app.isSharePort = true }
-func (app *GRPCApplication) CloseSharePort() { app.isSharePort = false }
+// WithGateway 设置开启 gRPC 服务的同时，是否开启 Gateway 额外提供 HTTP 接口服务
+func WithGateway(yes bool) GRPCAppOption {
+	return func(g *GRPCApplication) {
+		if yes {
+			g.OpenGateway()
+		} else {
+			g.CloseGateway()
+		}
+	}
+}
 
 // runGRPCServer 运行 gRPC Server 端服务
 func (app *GRPCApplication) runGRPCServer() error {
@@ -76,7 +84,7 @@ func (app *GRPCApplication) runGRPCServer() error {
 		return fmt.Errorf("TCP Listen err: %v", err)
 	}
 
-	logger.Debug("gRPC API 启动... 监听端口:", port)
+	app.Log.Debug("gRPC API 启动... 监听端口:", port)
 
 	if err := app.GRPCServer.Serve(conn); err != nil {
 		return fmt.Errorf("gRPCServer.server 启动异常: %v", err)
@@ -87,9 +95,6 @@ func (app *GRPCApplication) runGRPCServer() error {
 // runGatewayServer 运行用于提供 HTTP 接口服务的 gRPC-Gateway Server 端服务
 func (app *GRPCApplication) runGatewayServer() error {
 	port := app.Config.GetInt64("http.port")
-	if app.isSharePort {
-		port = app.Config.GetInt64("grpc.port")
-	}
 	if port == 0 {
 		return fmt.Errorf("监听端口异常")
 	}
@@ -99,7 +104,7 @@ func (app *GRPCApplication) runGatewayServer() error {
 		Handler: NewGatewayServerMux(app.GatewayServeMux),
 	}
 
-	logger.Debug("HTTP API 启动... 监听端口:", port)
+	app.Log.Debug("HTTP API 启动... 监听端口:", port)
 
 	if err := app.HTTPServer.ListenAndServe(); err != nil {
 		return fmt.Errorf("http.Server 启动异常: %v", err)
@@ -117,7 +122,7 @@ func (app *GRPCApplication) gracefulStop() {
 		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
 		if err := app.HTTPServer.Shutdown(ctx); err != nil {
-			logger.Error("HTTPServer shutdown err:", err)
+			app.Log.Error("HTTPServer shutdown err:", err)
 		}
 	}
 	app.GRPCServer.GracefulStop()

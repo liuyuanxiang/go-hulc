@@ -59,15 +59,19 @@ func (l *ILog) Info(v ...interface{}) {
 }
 
 func (l *ILog) Warn(v ...interface{}) {
-	l.infoLog.Println(json.Marshal(newWarningLog(fmt.Sprint(v...))))
+	l.warnLog.Println(json.Marshal(newWarningLog(fmt.Sprint(v...))))
 }
 
 func (l *ILog) Error(v ...interface{}) {
-	l.infoLog.Println(json.Marshal(newErrorLog(fmt.Sprint(v...))))
+	l.errorLog.Println(json.Marshal(newErrorLog(fmt.Sprint(v...))))
+}
+
+func (l *ILog) Fatal(v ...interface{}) {
+	l.errorLog.Fatalln(json.Marshal(newErrorLog(fmt.Sprint(v...))))
 }
 
 func (l *ILog) DB(duration float64, v ...interface{}) {
-	l.infoLog.Println(json.Marshal(newDatabaseLog(fmt.Sprint(v...), duration)))
+	l.dbLog.Println(json.Marshal(newDatabaseLog(fmt.Sprint(v...), duration)))
 }
 
 func IsDev(isDev bool) ILogOption {

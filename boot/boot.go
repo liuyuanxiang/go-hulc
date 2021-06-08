@@ -31,7 +31,7 @@ type GRPCApplication struct {
 	HTTPServer      *http.Server
 
 	isOpenGateway bool
-	isSharePort   bool
+	// isSharePort   bool
 
 	RegisterGRPCServer func(*grpc.Server)
 	RegisterGateway    func(context.Context, *runtime.ServeMux) error
