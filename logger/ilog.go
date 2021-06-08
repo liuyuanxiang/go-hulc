@@ -71,8 +71,14 @@ func (l *ILog) DB(duration float64, v ...interface{}) {
 }
 
 func IsDev(isDev bool) ILogOption {
-	return func(l *ILog) {
-		l.isDev = isDev
+	return func(lg *ILog) {
+		lg.isDev = isDev
+	}
+}
+
+func SetSavePath(path string) ILogOption {
+	return func(lg *ILog) {
+		lg.savePath = path
 	}
 }
 

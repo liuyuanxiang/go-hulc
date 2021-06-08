@@ -6,16 +6,16 @@ import (
 )
 
 var (
-	DefaultLogSavePath = "/webser/www/logs/application/"
-	DefaultLogSaveName = "ilog"
-	DefaultLogSaveExt  = "log"
+	// 文件默认存放在项目的 runtime 目录下
+	DefaultLogSavePath = "runtime/logs/"
+	DefaultLogSaveName = "app"
 )
 
 func openLogFile(filePath string) *os.File {
 	_, err := os.Stat(filePath)
 	switch {
 	case os.IsNotExist(err):
-		log.Fatalf("logs path not exist")
+		mkDir()
 	case os.IsPermission(err):
 		log.Fatalf("Permission :%v", err)
 	}
@@ -26,4 +26,12 @@ func openLogFile(filePath string) *os.File {
 	}
 
 	return handle
+}
+
+func mkDir() {
+	dir, _ := os.Getwd()
+	err := os.MkdirAll(dir+"/"+DefaultLogSavePath, os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
 }
