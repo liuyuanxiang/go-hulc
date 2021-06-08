@@ -1,9 +1,9 @@
 package hulk
 
 import (
-	"git.mysre.cn/ggcp-golang/go-hulk/boot"
-	"git.mysre.cn/ggcp-golang/go-hulk/config"
-	"git.mysre.cn/ggcp-golang/go-hulk/logger"
+	"git.mysre.cn/yunlian-golang/go-hulk/boot"
+	"git.mysre.cn/yunlian-golang/go-hulk/config"
+	"git.mysre.cn/yunlian-golang/go-hulk/logger"
 )
 
 const (

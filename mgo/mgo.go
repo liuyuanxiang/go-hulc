@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"git.mysre.cn/ggcp-golang/go-hulk/boot"
+	"git.mysre.cn/yunlian-golang/go-hulk/boot"
 	"gopkg.in/mgo.v2"
 )
 

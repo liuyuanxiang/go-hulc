@@ -1,4 +1,4 @@
-module git.mysre.cn/ggcp-golang/go-hulk
+module git.mysre.cn/yunlian-golang/go-hulk
 
 go 1.14
 

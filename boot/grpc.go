@@ -9,8 +9,8 @@ import (
 	"os/signal"
 	"time"
 
-	"git.mysre.cn/ggcp-golang/go-hulk/logger"
-	"git.mysre.cn/ggcp-golang/go-hulk/util"
+	"git.mysre.cn/yunlian-golang/go-hulk/logger"
+	"git.mysre.cn/yunlian-golang/go-hulk/util"
 	"google.golang.org/grpc"
 )
 
