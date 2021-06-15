@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"git.mysre.cn/liuyx02/go-hulc/boot"
+	"github.com/liuyuanxiang/go-hulc/boot"
 	"gopkg.in/mgo.v2"
 )
 

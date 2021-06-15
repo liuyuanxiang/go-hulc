@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"git.mysre.cn/liuyx02/go-hulc/config"
-	"git.mysre.cn/liuyx02/go-hulc/logger"
+	"github.com/liuyuanxiang/go-hulc/config"
+	"github.com/liuyuanxiang/go-hulc/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

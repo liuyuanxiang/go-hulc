@@ -1,4 +1,4 @@
-module git.mysre.cn/liuyx02/go-hulc/cmd/hulc-tools/v0.1
+module github.com/liuyuanxiang/go-hulc/cmd/hulc-tools/v0.1
 
 go 1.14
 

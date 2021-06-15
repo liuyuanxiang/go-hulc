@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 
-	"git.mysre.cn/liuyx02/go-hulc/cmd/hulc-tools/v0.1/internal/project"
-	"git.mysre.cn/liuyx02/go-hulc/cmd/hulc-tools/v0.1/internal/upgrade"
+	"github.com/liuyuanxiang/go-hulc/cmd/hulc-tools/v0.1/internal/project"
+	"github.com/liuyuanxiang/go-hulc/cmd/hulc-tools/v0.1/internal/upgrade"
 
 	"github.com/spf13/cobra"
 )

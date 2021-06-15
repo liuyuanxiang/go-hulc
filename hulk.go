@@ -1,9 +1,9 @@
 package hulk
 
 import (
-	"git.mysre.cn/liuyx02/go-hulc/boot"
-	"git.mysre.cn/liuyx02/go-hulc/config"
-	"git.mysre.cn/liuyx02/go-hulc/logger"
+	"github.com/liuyuanxiang/go-hulc/boot"
+	"github.com/liuyuanxiang/go-hulc/config"
+	"github.com/liuyuanxiang/go-hulc/logger"
 )
 
 const (

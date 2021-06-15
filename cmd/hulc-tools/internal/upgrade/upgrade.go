@@ -3,7 +3,7 @@ package upgrade
 import (
 	"fmt"
 
-	"git.mysre.cn/liuyx02/go-hulc/cmd/hulc-tools/v0.1/internal/base"
+	"github.com/liuyuanxiang/go-hulc/cmd/hulc-tools/v0.1/internal/base"
 
 	"github.com/spf13/cobra"
 )
