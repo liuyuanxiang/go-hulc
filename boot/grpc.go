@@ -9,7 +9,7 @@ import (
 	"os/signal"
 	"time"
 
-	"git.mysre.cn/yunlian-golang/go-hulk/util"
+	"git.mysre.cn/liuyx02/go-hulc/util"
 	"google.golang.org/grpc"
 )
 
